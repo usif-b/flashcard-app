@@ -22,9 +22,12 @@ const setFlashcard = asyncHandler(async(req, res) => {
     res.status(200).json(flashcard)
 })
 
-const updatedFlashcard = asyncHandler(async(req, res) => {
+const updateFlashcard = asyncHandler(async(req, res) => {
     const flashcard = await Flashcard.findById(req.params.flashcardId)
-
+    if(!req.body.frontText || !req.body.backText){
+        res.status(400)
+        throw new Error('add flashcard content')
+    }
     if(!flashcard){
         res.status(400)
         throw new Error('flashcard not found')
@@ -76,6 +79,6 @@ const deleteFlashcard = asyncHandler(async(req, res) => {
 module.exports = {
     getFlashcards,
     setFlashcard,
-    updatedFlashcard,
+    updateFlashcard,
     deleteFlashcard
 }

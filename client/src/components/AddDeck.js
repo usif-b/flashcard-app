@@ -3,8 +3,10 @@ import { useState } from 'react'
 
 export const AddDeck = () => {
     const [deckTitle, setDeckTitle] = useState('')
+    const [error, setError] = useState('')
 
     const handleSubmit = async(e) => {
+        e.preventDefault()
         const response = await fetch('http://localhost:5000/api/deck/', {
             method: 'POST',
             body: JSON.stringify({
@@ -16,8 +18,10 @@ export const AddDeck = () => {
             }
         })
 
-        const json = response.json()
-        console.log(json)
+        const json = await response.json()
+        if(!response.ok){
+            setError(await json.message)
+        }
     }
 
     return(
@@ -29,9 +33,11 @@ export const AddDeck = () => {
                 id = 'deckTitle'
                 name = 'deckTitle'
                 value = {deckTitle}
+                maxLength = {25}
                 placeholder = 'Enter new deck title'
                 onChange = {(e) => {setDeckTitle(e.target.value)}}
                 />
+                {error && <p className='error'>{error}</p>}
                 <input type = 'submit' value = 'Add deck' />
             </form>
         </div>

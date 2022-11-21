@@ -43,7 +43,10 @@ const setDeck = asyncHandler(async(req, res) => {
 
 const updateDeck = asyncHandler(async(req, res) => {
     const deck = await Deck.findById(req.params.deckId)
-
+    if(!req.body.title){
+        res.status(400)
+        throw new Error('add deck title')
+    }
     if(!deck){
         res.status(400)
         throw new Error('deck not found')

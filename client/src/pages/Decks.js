@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import { DeckList } from '../components/DeckList'
 import { useState } from 'react'
 import { AddDeck } from '../components/AddDeck'
+import { Deck } from '../components/Deck'
 
-export const Home = () => {
+export const Decks = () => {
     const [decks, setDecks] = useState(null)
-    
+
     const getDecks = async () => {
         const response = await fetch('http://localhost:5000/api/deck', {
             method: 'GET',
@@ -30,10 +30,14 @@ export const Home = () => {
     }, [])
     
     return(
-        <div className='home'>
+        <div className='decks'>
             <h2>My decks</h2>
             <AddDeck />
-            {decks && <DeckList decks = {decks}/>}
+            {decks && <div className='deck-list'>
+                {decks.map((deck) => {
+                    return <Deck key = {deck._id} deck = {deck}></Deck>
+                })}
+            </div>}
         </div>
     )
 }

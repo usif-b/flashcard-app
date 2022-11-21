@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom'
 export const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
@@ -26,6 +27,9 @@ export const Login = () => {
             sessionStorage.setItem('token', await json.token)
             navigate('/', {replace: true})
             window.location.reload()
+        }
+        if(!response.ok){
+            setError(await json.message)
         }
 
         console.log(sessionStorage.getItem('token'))
@@ -52,6 +56,7 @@ export const Login = () => {
                 placeholder = 'Enter password'
                 onChange = {(e) => {setPassword(e.target.value)}}
                 />
+                {error && <p className='error'>{error}</p>}
                 <input type = 'submit' value = 'Login' />
             </form>
         </div>

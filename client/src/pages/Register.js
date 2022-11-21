@@ -5,6 +5,7 @@ export const Register = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -23,6 +24,10 @@ export const Register = () => {
         const json = await response.json()
         if(response.ok){
             sessionStorage.setItem('token', await json.token)
+        }
+
+        if(!response.ok){
+            setError(await json.message)
         }
 
         console.log(sessionStorage.getItem('token'))
@@ -59,6 +64,7 @@ export const Register = () => {
                 placeholder = 'Enter password'
                 onChange = {(e) => {setPassword(e.target.value)}}
                 />
+                {error && <p className='error'>{error}</p>}
                 <input type = 'submit' value = 'Register' />
             </form>
         </div>

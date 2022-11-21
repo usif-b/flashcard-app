@@ -2,15 +2,17 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { AddFlashcard } from '../components/AddFlashcard'
-import { FlashcardList } from '../components/FlashcardList'
 import { FlashcardViewer } from '../components/FlashcardViewer'
+import { FlashcardPreview } from '../components/FlashcardPreview'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { AiFillEdit } from 'react-icons/ai'
 
-export const Deck = () => {
+export const Flashcards = () => {
     const [deck, setDeck] = useState(null)
     const [flashcards, setFlashcards] = useState(null)
     const [editToggle, setEditToggle] = useState(false)
+    const [isHidden, setIsHidden] = useState(false)
+    const [error, setError] = useState('')
     const { deckId } = useParams()
     const navigate = useNavigate()
 
@@ -24,6 +26,7 @@ export const Deck = () => {
         })
 
         const json = await response.json()
+
         console.log(json)
         setDeck(json)
     }
@@ -56,7 +59,8 @@ export const Deck = () => {
         navigate('/')
     }
 
-    const updateDeckName = async() => {
+    const updateDeckName = async(e) => {
+        e.preventDefault()
         const response = await fetch('http://localhost:5000/api/deck/' + deckId, {
             method: 'PUT',
             body: JSON.stringify({
@@ -69,6 +73,14 @@ export const Deck = () => {
         })
 
         const json = await response.json()
+
+        if(response.ok){
+            setEditToggle(false)
+        }
+
+        if(!response.ok){
+            setError(await json.message)
+        }
     }
 
     useEffect(() => {
@@ -77,34 +89,40 @@ export const Deck = () => {
     }, [])
 
     return(
-        <div className='deck-page'>
+        <div className='flashcards'>
             {deck && <>
-                <div className='deck-page-header'>
+                <div className='flashcards-header'>
                     {editToggle ? (<form id = 'editTitleForm' onSubmit={updateDeckName}>
                         <input
                         type = 'text'
                         className='form-input'
                         id = 'deckTitle'
                         name = 'deckTitle'
+                        maxLength={25}
                         value = {deck.title}
                         onChange = {(e) => {
                             setDeck({
                                 title: e.target.value
                             })
                         }}/>
+                        {error && <p className='error'>{error}</p>}
                     </form>) : <h2>{deck.title}</h2>}
-                    <div className='deck-page-header-buttons'>
+                    <div className='flashcards-header-buttons'>
                         <button onClick={() => {setEditToggle(!editToggle)}}><AiFillEdit/></button>
-                            <button onClick={deleteDeck}><BsFillTrashFill/></button>
+                        <button onClick={deleteDeck}><BsFillTrashFill/></button>
                     </div>
                 </div>
+                {flashcards && <FlashcardViewer flashcards = {flashcards} />}
                 <AddFlashcard deckId = {deck._id} />
+                <button className='hide-button' onClick={() => {setIsHidden(!isHidden)}}>Hide flashcards</button>
+                {flashcards && <div className='flashcard-list' style = {{display: isHidden ? 'none' : 'flex'}}>
+                    {flashcards &&<>
+                    {flashcards.map((flashcard) => {
+                        return <FlashcardPreview key = {flashcard._id} flashcard = {flashcard}/>
+                        })}
+                    </>}
+                </div>}
             </>}
-            {flashcards &&<>
-                <FlashcardViewer flashcards = {flashcards} />
-                <FlashcardList flashcards = {flashcards} />
-            </>
-            }
         </div>
     )
 }
