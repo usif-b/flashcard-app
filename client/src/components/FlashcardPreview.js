@@ -29,6 +29,7 @@ export const FlashcardPreview = (props) => {
             }
         })
         const json = await response.json()
+        
         if(response.ok){
             props.removeFlashcard(props.flashcard._id)
         }

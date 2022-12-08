@@ -30,7 +30,6 @@ export const AddFlashcard = (props) => {
         if(!response.ok){
             setError(await json.message)
         }
-        console.log(await json)
     }
 
         return(

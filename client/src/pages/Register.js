@@ -29,8 +29,6 @@ export const Register = () => {
         if(!response.ok){
             setError(await json.message)
         }
-
-        console.log(sessionStorage.getItem('token'))
     }
 
     return(

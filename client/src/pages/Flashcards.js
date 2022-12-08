@@ -26,8 +26,6 @@ export const Flashcards = () => {
         })
 
         const json = await response.json()
-
-        console.log(json)
         setDeck(json)
     }
 
@@ -40,7 +38,6 @@ export const Flashcards = () => {
             }
         })
         const json = await response.json()
-        console.log(await json)
         if(json[0]){
             setFlashcards(json)
         }

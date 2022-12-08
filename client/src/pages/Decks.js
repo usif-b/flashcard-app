@@ -29,11 +29,7 @@ export const Decks = () => {
 
         const json = await response.json()
         if(response.ok){
-            console.log(json)
             setDecks(json)
-        }
-        if(!response.ok){
-            console.log('response not ok')
         }
     }
 
