@@ -55,7 +55,6 @@ export const Flashcards = () => {
             }
         })
         const json = await response.json()
-        console.log(await json)
         navigate('/')
     }
 
@@ -81,6 +80,10 @@ export const Flashcards = () => {
         if(!response.ok){
             setError(await json.message)
         }
+    }
+
+    const removeFlashcard = (id) => {
+        setFlashcards(flashcards => flashcards.filter(flashcard => flashcard._id !== id))
     }
 
     useEffect(() => {
@@ -113,12 +116,12 @@ export const Flashcards = () => {
                     </div>
                 </div>
                 {flashcards && <FlashcardViewer flashcards = {flashcards} />}
-                <AddFlashcard deckId = {deck._id} />
+                <AddFlashcard deckId = {deck._id} setFlashcards = {setFlashcards} flashcards = {flashcards}/>
                 <button className='hide-button' onClick={() => {setIsHidden(!isHidden)}}>Hide flashcards</button>
                 {flashcards && <div className='flashcard-list' style = {{display: isHidden ? 'none' : 'flex'}}>
                     {flashcards &&<>
                     {flashcards.map((flashcard) => {
-                        return <FlashcardPreview key = {flashcard._id} flashcard = {flashcard}/>
+                        return <FlashcardPreview key = {flashcard._id} flashcard = {flashcard} removeFlashcard = {removeFlashcard}/>
                         })}
                     </>}
                 </div>}

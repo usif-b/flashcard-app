@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
-export const AddDeck = () => {
+export const AddDeck = (props) => {
     const [deckTitle, setDeckTitle] = useState('')
     const [error, setError] = useState('')
 
@@ -19,6 +19,9 @@ export const AddDeck = () => {
         })
 
         const json = await response.json()
+        if(response.ok){
+            props.addToDeck(json)
+        }
         if(!response.ok){
             setError(await json.message)
         }

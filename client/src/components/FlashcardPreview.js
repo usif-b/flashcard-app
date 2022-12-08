@@ -19,7 +19,8 @@ export const FlashcardPreview = (props) => {
         setEditToggle(false)
     }
 
-    const handleDelete = async() => {
+    const handleDelete = async(e) => {
+        e.preventDefault()
         const response = await fetch('http://localhost:5000/api/flashcard/' + props.flashcard._id, {
             method: 'DELETE',
             headers: {
@@ -28,7 +29,9 @@ export const FlashcardPreview = (props) => {
             }
         })
         const json = await response.json()
-        window.location.reload()
+        if(response.ok){
+            props.removeFlashcard(props.flashcard._id)
+        }
     }
     const handleEdit = async(e) => {
         e.preventDefault()

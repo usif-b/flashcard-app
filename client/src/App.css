@@ -89,12 +89,12 @@ h2, h3{
   gap:1rem;
 }
 
-.login, .register{
+.login, .register {
   padding:0 0.5rem 0 0.5rem;
   margin-top:1rem;
 }
 
-.login form, .register form{
+.login form, .register form, .not-logged-in{
   display:flex;
   flex-direction:column;
   background-color:#31263E;
@@ -143,12 +143,12 @@ h2, h3{
   font-size: 1.5rem;
 }
 
-.flashcards-header-buttons{
+.flashcards-header-buttons, .edit-flashcard-buttons, .not-logged-in-buttons{
   display:flex;
   gap:0.5rem;
 }
 
-.flashcards-header-buttons button, .flashcard-preview-buttons button, .edit-flashcard-buttons button, input[type='submit']{
+.flashcards-header-buttons button, .flashcard-preview-buttons button, .edit-flashcard-buttons button, input[type='submit'], .not-logged-in-buttons a{
   background-color: #44355B;
   color:white;
   border-style:none;
