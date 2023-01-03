@@ -1,11 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const Register = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -24,8 +26,9 @@ export const Register = () => {
         const json = await response.json()
         if(response.ok){
             sessionStorage.setItem('token', await json.token)
+            navigate('/', {replace: true})
+            window.location.reload()
         }
-
         if(!response.ok){
             setError(await json.message)
         }

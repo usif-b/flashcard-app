@@ -39,7 +39,7 @@ export const Flashcards = () => {
         })
         const json = await response.json()
         if(json[0]){
-            setFlashcards(json)
+            setFlashcards(json.reverse())
         }
     }
 

@@ -15,7 +15,7 @@ export const Decks = () => {
     }
 
     const addToDeck = (data) => {
-        setDecks([...decks, data])
+        setDecks([data, ...decks])
     }
 
     const getDecks = async () => {
@@ -29,7 +29,7 @@ export const Decks = () => {
 
         const json = await response.json()
         if(response.ok){
-            setDecks(json)
+            setDecks(json.reverse())
         }
     }
 

@@ -22,7 +22,12 @@ export const AddFlashcard = (props) => {
 
         const json = await response.json()
         if(response.ok){
-            props.setFlashcards([...props.flashcards, json])
+            if(props.flashcards){
+                props.setFlashcards([json, ...props.flashcards])
+            }
+            else{
+                props.setFlashcards([json])
+            }
             setFrontText('')
             setBackText('')
         }
